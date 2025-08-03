@@ -7,10 +7,13 @@ import time
 import torch
 from tqdm import tqdm
 from torch.utils.data import DataLoader
+import torch.serialization
+from torch.serialization import safe_globals
 
 from bert_pytorch.dataset import WordVocab
 from bert_pytorch.dataset import LogDataset
 from bert_pytorch.dataset.sample import fixed_window
+from bert_pytorch.model.log_model import BERTLog
 
 
 def compute_anomaly(results, params, seq_threshold=0.5):
@@ -227,7 +230,8 @@ class Predictor():
         return total_results, output_cls
 
     def predict(self):
-        model = torch.load(self.model_path)
+        with safe_globals([BERTLog]):
+            model = torch.load(self.model_path, weights_only=False)
         model.to(self.device)
         model.eval()
         print('model_path: {}'.format(self.model_path))
@@ -245,7 +249,8 @@ class Predictor():
                 error_dict = pickle.load(f)
 
         if self.hypersphere_loss:
-            center_dict = torch.load(self.model_dir + "best_center.pt")
+            with safe_globals([np.core.multiarray.scalar]):
+                center_dict = torch.load(self.model_dir + "best_center.pt", weights_only=False)
             self.center = center_dict["center"]
             self.radius = center_dict["radius"]
             # self.center = self.center.view(1,-1)

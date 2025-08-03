@@ -22,22 +22,22 @@ options["model_path"] = options["model_dir"] + "best_bert.pth"
 options["train_vocab"] = options["output_dir"] + "raw_log_sequence.csv"
 options["vocab_path"] = options["output_dir"] + "vocab.pkl"  # pickle file
 
-options["window_size"] = 2
+options["window_size"] = 1
 options["adaptive_window"] = True
-options["seq_len"] = 512
+options["seq_len"] = 5
 options["max_len"] = 512 # for position embedding
-options["min_len"] = 2
-options["mask_ratio"] = 0.65
+options["min_len"] = 1
+options["mask_ratio"] = 0.85
 # sample ratio
 options["train_ratio"] = 1
-options["valid_ratio"] = 0.05
+options["valid_ratio"] = 0.1
 options["test_ratio"] = 1
 
 # features
 options["is_logkey"] = True
 options["is_time"] = False
 
-options["hypersphere_loss"] = True
+options["hypersphere_loss"] = False
 options["hypersphere_loss_test"] = False
 
 options["scale"] = None # MinMaxScaler()
@@ -48,9 +48,9 @@ options["hidden"] = 256 # embedding size
 options["layers"] = 4
 options["attn_heads"] = 4
 
-options["epochs"] = 200
+options["epochs"] = 100
 options["n_epochs_stop"] = 10
-options["batch_size"] = 32
+options["batch_size"] = 2
 
 options["corpus_lines"] = None
 options["on_memory"] = True
